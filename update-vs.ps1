@@ -1,5 +1,23 @@
 #written by Ingo Karstein (ik@kenaro.com)
-#(C) 2020 by Ingo Karstein. Released under MIT License
+#(C) 2020 - 2021 by Ingo Karstein. Released under MIT License
+
+# VS 2022
+
+$t = "$(New-TemporaryFile).exe"
+
+#Community Edition
+#iwr "https://download.visualstudio.microsoft.com/download/pr/7aa16be3-9952-4bd2-8ecf-eae91faa0a06/14fe35fa35c305b03032a885ff3ebefaf88fce5051ee84183d4c5de75783339e/vs_Community.exe" -outfile $t
+
+#Enterprise Edition
+iwr "https://download.visualstudio.microsoft.com/download/pr/7aa16be3-9952-4bd2-8ecf-eae91faa0a06/02179ee54342d77d9e6252dedc92b5fccee40d16168dc4f6df4387796da9a982/vs_Enterprise.exe" -OutFile $t
+
+write-host "VS 2022"
+get-childitem "C:\Program Files\Microsoft Visual Studio\2022" | % {
+	write-host "`t$($_.FullName)"
+	Start-Process $t -arg @("update", "--passive", "--installPath", """$($_.FullName)""") -Wait
+}
+
+remove-item $t -Force -Confirm:$false
 
 # VS 2019
 
